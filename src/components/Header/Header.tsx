@@ -1,9 +1,15 @@
 import React from 'react';
 
-export const Header: React.FunctionComponent = () => {
+interface HeaderProps {
+	title: string;
+}
+
+export const Header: React.FunctionComponent<HeaderProps> = ({
+	title,
+}: HeaderProps) => {
 	return (
 		<div className="container-title">
-			<h2 className="title">Card Game</h2>
+			<h2 className="title">{title}</h2>
 		</div>
 	);
 };

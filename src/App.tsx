@@ -11,6 +11,8 @@ import { Header } from './components/Header/Header';
 import { Button } from './components/Button/Button';
 import { Paragraph } from './components/Paragraph/Paragraph';
 import { CardImage } from './components/Card/CardImage';
+import { ErrorContainer } from './components/Error/ErrorContainer';
+import { Footer } from './components/Fotter/Footer';
 
 export const App: React.FunctionComponent = () => {
 	const [deckId, setDeckId] = useState('');
@@ -19,7 +21,7 @@ export const App: React.FunctionComponent = () => {
 	const [card, setCard] = useState<Card | null>(null);
 	const [pileCards, setPileCards] = useState<Card[]>([]);
 	const [showPile, setShowPile] = useState(false);
-	const [errorMessage, setErrorMessage] = useState('');
+	const [errorMessage, setErrorMessage] = useState<string>('');
 
 	useEffect(() => {
 		async function fetchDeck() {
@@ -66,16 +68,13 @@ export const App: React.FunctionComponent = () => {
 			setShowPile(true);
 		} catch (error) {
 			console.error('Error occurred:', error);
-			setErrorMessage(
-				// add a tailwind component here
-				'An error occurred while fetching the cards. Please try again.'
-			);
+			setErrorMessage('null');
 		}
 	};
 
 	return (
 		<div className="container-app">
-			<Header />
+			<Header title="Card Game" />
 			<Paragraph>{remaining}</Paragraph>
 			<div className="container-draw">
 				<div className="container-half">
@@ -102,7 +101,9 @@ export const App: React.FunctionComponent = () => {
 					</div>
 				</div>
 			</div>
-			{errorMessage && <p className="warning">{errorMessage}</p>}
+			{errorMessage && (
+				<ErrorContainer message="You have to take a card first!" />
+			)}
 			<div className="cards-wrapper">
 				{cards.map((card) => (
 					<div className="w-1/3 p-2" key={card.code}>
@@ -113,6 +114,7 @@ export const App: React.FunctionComponent = () => {
 			<div className="flex justify-center mt-8">
 				<Button onClick={handleShuffle}>Shuffle</Button>
 			</div>
+			<Footer footerMessage="Hope you have fun!"></Footer>
 		</div>
 	);
 };
