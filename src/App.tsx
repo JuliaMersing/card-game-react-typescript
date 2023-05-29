@@ -7,6 +7,7 @@ import {
 	listCardsInPile,
 	CardData,
 } from './components/services/api';
+import { get, set } from './components/services/localStorage';
 import { Header } from './components/Header/Header';
 import { Button } from './components/Button/Button';
 import { Paragraph } from './components/Paragraph/Paragraph';
@@ -16,11 +17,13 @@ import { ErrorContainer } from './components/Error/ErrorContainer';
 import { Footer } from './components/Fotter/Footer';
 
 export const App: React.FunctionComponent = () => {
-	const [deckId, setDeckId] = useState('');
-	const [remaining, setRemaining] = useState(0);
+	const [deckId, setDeckId] = useState(get('deckId', ''));
+	const [remaining, setRemaining] = useState(get('remaining', '0'));
 	const [cards, setCards] = useState<CardData[]>([]);
 	const [card, setCard] = useState<CardData | null>(null);
-	const [cardsPile, setCardsPile] = useState<CardData[]>([]);
+	const [cardsPile, setCardsPile] = useState(
+		get('cardsPile', '<CardData[]>([])')
+	);
 	const [showPile, setShowPile] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -34,6 +37,12 @@ export const App: React.FunctionComponent = () => {
 		}
 		fetchDeck();
 	}, []);
+
+	useEffect(() => {
+		set('deckId', deckId);
+		set('remaining', remaining);
+		set('cardsPile', cardsPile);
+	}, [deckId, remaining, cardsPile]);
 
 	const resetCards = () => {
 		setCards([]);
