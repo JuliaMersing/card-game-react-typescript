@@ -5,21 +5,22 @@ import {
 	drawCard,
 	addToPile,
 	listCardsInPile,
-	Card,
+	CardData,
 } from './components/services/api';
 import { Header } from './components/Header/Header';
 import { Button } from './components/Button/Button';
 import { Paragraph } from './components/Paragraph/Paragraph';
-import { CardImage } from './components/Card/CardImage';
+import { Card } from './components/Card/Card';
+import { CardsPile } from './components/Card/CardsPile';
 import { ErrorContainer } from './components/Error/ErrorContainer';
 import { Footer } from './components/Fotter/Footer';
 
 export const App: React.FunctionComponent = () => {
 	const [deckId, setDeckId] = useState('');
 	const [remaining, setRemaining] = useState(0);
-	const [cards, setCards] = useState<Card[]>([]);
-	const [card, setCard] = useState<Card | null>(null);
-	const [pileCards, setPileCards] = useState<Card[]>([]);
+	const [cards, setCards] = useState<CardData[]>([]);
+	const [card, setCard] = useState<CardData | null>(null);
+	const [cardsPile, setCardsPile] = useState<CardData[]>([]);
 	const [showPile, setShowPile] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -40,7 +41,7 @@ export const App: React.FunctionComponent = () => {
 	};
 
 	const resetPile = () => {
-		setPileCards([]);
+		setCardsPile([]);
 		setShowPile(false);
 	};
 
@@ -64,7 +65,7 @@ export const App: React.FunctionComponent = () => {
 			if (response.piles.myPile.cards === undefined) {
 				throw new Error('Cards are undefined');
 			}
-			setPileCards(response.piles.myPile.cards);
+			setCardsPile(response.piles.myPile.cards);
 			setShowPile(true);
 		} catch (error) {
 			console.error('Error occurred:', error);
@@ -74,43 +75,18 @@ export const App: React.FunctionComponent = () => {
 
 	return (
 		<div className="container-app">
-			<Header title="Card Game" />
-			<Paragraph>{remaining}</Paragraph>
-			<div className="container-draw">
-				<div className="container-half">
-					<div className="button-wrapper">
-						<Button onClick={handleDraw}>Draw</Button>
-					</div>
-					<div className="flex justify-center">
-						{card && (
-							<img src={card.image} alt={card.code} className="max-w-xs" />
-						)}
-					</div>
-				</div>
-				<div className="container-half">
-					<div className="button-wrapper">
-						<Button onClick={handleShowPile}>See Pile</Button>
-					</div>
-					<div className="cards-wrapper">
-						{showPile &&
-							pileCards.map((card) => (
-								<div className="w-1/3 p-2" key={card.code}>
-									<CardImage src={card.image} alt={card.code} />
-								</div>
-							))}
-					</div>
-				</div>
-			</div>
 			{errorMessage && (
 				<ErrorContainer message="You have to take a card first!" />
 			)}
-			<div className="cards-wrapper">
-				{cards.map((card) => (
-					<div className="w-1/3 p-2" key={card.code}>
-						<CardImage src={card.image} alt={card.code} />
-					</div>
-				))}
-			</div>
+			<Header title="Card Game" />
+			<Paragraph>{remaining}</Paragraph>
+			<Button onClick={handleDraw}>Draw</Button>
+			{card && <Card image={card.image} code={card.code} />}
+			<Button onClick={handleShowPile}>See Pile</Button>
+			{showPile && <CardsPile cards={cardsPile} />}
+			{cards.map((card) => (
+				<Card image={card.image} code={card.code} />
+			))}
 			<div className="flex justify-center mt-8">
 				<Button onClick={handleShuffle}>Shuffle</Button>
 			</div>

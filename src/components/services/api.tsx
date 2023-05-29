@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_BASE_URL = 'https://deckofcardsapi.com/api/deck';
 
-export interface Card {
+export interface CardData {
 	code: string;
 	image: string;
 }
@@ -29,7 +29,7 @@ export async function drawCard(deckId: string) {
 export async function addToPile(
 	deckId: string,
 	pileName: string,
-	cards: Card[]
+	cards: CardData[]
 ) {
 	const cardCodes = cards.map((card) => card.code).join(',');
 	const response = await axios.get(
