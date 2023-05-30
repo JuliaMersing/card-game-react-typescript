@@ -11,7 +11,7 @@ export const CardsPile: React.FC<CardsPileProps> = ({
 }: CardsPileProps) => {
 	const cardsList = cards.map((card) => {
 		return (
-			<li>
+			<li key={card.code}>
 				<Card image={card.image} code={card.code} />
 			</li>
 		);

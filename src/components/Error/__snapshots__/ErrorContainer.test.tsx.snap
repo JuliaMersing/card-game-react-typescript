@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorContainer component should match snapshot 1`] = `
+<span
+  class="error-message"
+>
+  You have to draw a card first!
+</span>
+`;

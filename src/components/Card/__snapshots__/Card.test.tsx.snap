@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card component should match snapshot 1`] = `
+<img
+  alt="6H"
+  class="cards-image"
+  src="https://deckofcardsapi.com/static/img/6H.png"
+/>
+`;
