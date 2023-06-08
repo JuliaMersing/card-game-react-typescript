@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 interface ErrorProps {
 	message: string;
-	onClose?: () => void; // Add the onClose prop to the interface
+	onClose?: () => void;
 }
 
 export const ErrorContainer: React.FunctionComponent<ErrorProps> = ({

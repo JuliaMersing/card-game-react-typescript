@@ -26,6 +26,7 @@ export const CardGame: React.FunctionComponent = () => {
 	);
 	const [showPile, setShowPile] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string>('');
+	const [isDeckIdFetched, setIsDeckIdFetched] = useState(false);
 
 	useEffect(() => {
 		async function fetchDeck() {
@@ -34,9 +35,12 @@ export const CardGame: React.FunctionComponent = () => {
 			const response = await drawCard(newDeckId);
 			const { remaining } = response;
 			setRemaining(remaining);
+			setIsDeckIdFetched(true);
 		}
-		fetchDeck();
-	}, []);
+		if (!isDeckIdFetched) {
+			fetchDeck();
+		}
+	}, [isDeckIdFetched]);
 
 	useEffect(() => {
 		set('deckId', deckId);
@@ -66,6 +70,7 @@ export const CardGame: React.FunctionComponent = () => {
 		setCard(cards[0]);
 		await addToPile(deckId, 'myPile', cards);
 		setRemaining(remaining);
+		handleShowPile();
 	};
 
 	const handleShowPile = async () => {
